@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bridge_crd-controller
+  namespace: your-namespace
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bridge_crd-controller
+  template:
+    metadata:
+      labels:
+        app: bridge_crd-controller
+    spec:
+      containers:
+      - name: bridge_crd-controller
+        image: your-dockerhub-username/bridge_crd-controller:latest
+        env:
+        - name: BRIDGE_API
+          value: "http://bridge-api-service.default.svc.cluster.local:5000"
+        - name: NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
